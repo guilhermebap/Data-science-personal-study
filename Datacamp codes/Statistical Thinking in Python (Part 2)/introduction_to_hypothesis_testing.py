@@ -95,3 +95,80 @@ plt.margins(0.02)
 _ = plt.xlabel('monthly rainfall (mm)')
 _ = plt.ylabel('ECDF')
 plt.show()
+
+
+def draw_perm_reps(data_1, data_2, func, size=1):
+    """Generate multiple permutation replicates."""
+
+    # Initialize array of replicates: perm_replicates
+    perm_replicates = np.empty(size)
+
+    for i in range(size):
+        # Generate permutation sample
+        perm_sample_1, perm_sample_2 = permutation_sample(data_1, data_2)
+
+        # Compute the test statistic
+        perm_replicates[i] = func(perm_sample_1, perm_sample_2)
+
+    return perm_replicates
+
+'''
+Look before you leap: EDA before hypothesis testing
+ALWAYS DO EDA FIRST
+ALWAYS DO EDA FIRST
+'''
+
+# Make bee swarm plot
+_ = sns.swarmplot(x='ID', y='impact_force', data=df)
+
+# Label axes
+_ = plt.xlabel('frog')
+_ = plt.ylabel('impact force (N)')
+
+# Show the plot
+plt.show()
+
+'''
+Permutation test on frog data
+
+The average strike force of Frog A was 0.71 Newtons (N), and that of Frog B was 0.42 N for a difference of 0.29 N
+'''
+def diff_of_means(data_1, data_2):
+    """Difference in means of two arrays."""
+
+    # The difference of means of data_1, data_2: diff
+    diff = (np.mean(data_1) - np.mean(data_2))
+
+    return diff
+
+# Compute difference of mean impact force from experiment: empirical_diff_means
+empirical_diff_means = diff_of_means(force_a, force_b)
+
+# Draw 10,000 permutation replicates: perm_replicates
+perm_replicates = draw_perm_reps(force_a, force_b,
+                                 diff_of_means, size=10000)
+
+# Compute p-value: p
+p = np.sum(perm_replicates >= empirical_diff_means) / len(perm_replicates)
+
+# Print the result
+print('p-value =', p)
+
+'''
+A one-sample bootstrap hypothesis test
+'''
+# Make an array of translated impact forces: translated_force_b
+translated_force_b = 0.55 + force_b - np.mean(force_b)
+
+# Take bootstrap replicates of Frog B's translated impact forces: bs_replicates
+bs_replicates = draw_bs_reps(translated_force_b, np.mean, 10000)
+
+# Compute fraction of replicates that are less than the observed Frog B force: p
+p = np.sum(bs_replicates <= np.mean(force_b)) / 10000
+
+# Print the p-value
+print('p = ', p)
+
+'''
+A two-sample bootstrap hypothesis test for difference of means
+'''
