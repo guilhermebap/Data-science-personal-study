@@ -97,3 +97,70 @@ p.circle(date, price, fill_color='white', size=4)
 # Specify the name of the output file and show the result
 output_file('line.html')
 show(p)
+
+
+'''
+Patches
+
+Patches enable draw geometric figure with (x,y) coordinates
+'''
+# Create a list of az_lons, co_lons, nm_lons and ut_lons: x
+x = [az_lons, co_lons, nm_lons, ut_lons]
+
+# Create a list of az_lats, co_lats, nm_lats and ut_lats: y
+y = [az_lats, co_lats, nm_lats, ut_lats]
+
+# Add patches to figure p with line_color=white for x and y
+p.patches(x, y, line_color='white')
+
+# Specify the name of the output file and show the result
+output_file('four_corners.html')
+show(p)
+
+
+'''
+Plotting data from NumPy arrays
+'''
+# Import numpy as np
+import numpy as np
+
+# Create array using np.linspace: x
+x = np.linspace(0,5,100)
+
+# Create array using np.cos: y
+y = np.cos(x)
+
+# Add circles at x and y
+p.circle(x, y)
+
+# Specify the name of the output file and show the result
+output_file('numpy.html')
+show(p)
+
+
+'''
+Plotting data from Pandas DataFrames
+'''
+# Import pandas as pd
+import pandas as pd
+
+# Read in the CSV file: df
+df = pd.read_csv('auto.csv')
+
+# Import figure from bokeh.plotting
+from bokeh.plotting import figure
+
+# Create the figure: p
+p = figure(x_axis_label='HP', y_axis_label='MPG')
+
+# Plot mpg vs hp by color
+p.circle(df['hp'], df['mpg'], color=df['color'], size=10)
+
+# Specify the name of the output file and show the result
+output_file('auto-df.html')
+show(p)
+
+
+'''
+The Bokeh ColumnDataSource (continued)
+'''
