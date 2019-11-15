@@ -164,3 +164,29 @@ show(p)
 '''
 The Bokeh ColumnDataSource (continued)
 '''
+# Import the ColumnDataSource class from bokeh.plotting
+from bokeh.plotting import ColumnDataSource
+
+# Create a ColumnDataSource from df: source
+source = ColumnDataSource(df)
+
+# Add circle glyphs to the figure p
+p.circle(x='Year', y='Time', color='color', size=8, source = source)
+
+# Specify the name of the output file and show the result
+output_file('sprint.html')
+show(p)
+
+
+'''
+Selection and non-selection glyphs
+'''
+# Create a figure with the "box_select" tool: p
+p = figure(tools='box_select', x_axis_label='Year', y_axis_label='Time')
+
+# Add circle glyphs to the figure p with the selected and non-selected properties
+p.circle(x='Year', y='Time', source=source, selection_color='red', nonselection_alpha=0.1, nonselection_color='blue')
+
+# Specify the name of the output file and show the result
+output_file('selection_glyph.html')
+show(p)
