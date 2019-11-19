@@ -165,7 +165,7 @@ show(p)
 The Bokeh ColumnDataSource (continued)
 '''
 # Import the ColumnDataSource class from bokeh.plotting
-from bokeh.plotting import ColumnDataSource
+from bokeh.models import ColumnDataSource
 
 # Create a ColumnDataSource from df: source
 source = ColumnDataSource(df)
