@@ -118,3 +118,4 @@ print(vec_alphanumeric.get_feature_names()[:15])
 
 
 '''
+Combining text columns for tokenization
