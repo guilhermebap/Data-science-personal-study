@@ -175,4 +175,7 @@ vec_alphanumeric.fit(text_vector)
 # Print number of tokens of vec_alphanumeric
 print("There are {} alpha-numeric tokens in the dataset".format(len(vec_alphanumeric.get_feature_names())))
 
+# There are 1404 tokens in the dataset
+# There are 1117 alpha-numeric tokens in the dataset
+
 ## Notice that tokenizing on alpha-numeric tokens reduced the number of tokens
