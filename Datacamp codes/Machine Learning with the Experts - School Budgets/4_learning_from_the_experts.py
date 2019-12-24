@@ -89,7 +89,105 @@ pl = Pipeline([
         ('scale', MaxAbsScaler()),
         ('clf', OneVsRestClassifier(LogisticRegression()))
     ])
+# Log loss score: 1.2681.
 
 
 
 '''
+Implement interaction modeling in scikit-learn
+
+It's time to add interaction features to your model. The PolynomialFeatures
+object in scikit-learn does just that, but here you're going to use a custom
+interaction object, SparseInteractions. Interaction terms are a statistical
+tool that lets your model express what happens if two features appear together
+in the same row.
+
+SparseInteractions does the same thing as PolynomialFeatures, but it uses
+sparse matrices to do so.
+'''
+# Instantiate pipeline: pl
+pl = Pipeline([
+        ('union', FeatureUnion(
+            transformer_list = [
+                ('numeric_features', Pipeline([
+                    ('selector', get_numeric_data),
+                    ('imputer', Imputer())
+                ])),
+                ('text_features', Pipeline([
+                    ('selector', get_text_data),
+                    ('vectorizer', CountVectorizer(token_pattern=TOKENS_ALPHANUMERIC,
+                                                   ngram_range=(1, 2))),
+                    ('dim_red', SelectKBest(chi2, chi_k))
+                ]))
+             ]
+        )),
+        ('int', SparseInteractions(degree=2)),
+        ('scale', MaxAbsScaler()),
+        ('clf', OneVsRestClassifier(LogisticRegression()))
+    ])
+#Log loss score: 1.2256
+
+
+
+'''
+Implementing the hashing trick in scikit-learn
+
+As you saw in the video, HashingVectorizer acts just like CountVectorizer in that
+it can accept token_pattern and ngram_range parameters. The important difference
+is that it creates hash values from the text, so that we get all the COMPUTATIONAL
+advantages of hashing!
+'''
+# Import HashingVectorizer
+from sklearn.feature_extraction.text import HashingVectorizer
+
+# Get text data: text_data
+text_data = combine_text_columns(X_train)
+
+# Create the token pattern: TOKENS_ALPHANUMERIC
+TOKENS_ALPHANUMERIC = '[A-Za-z0-9]+(?=\\s+)'
+
+# Instantiate the HashingVectorizer: hashing_vec
+hashing_vec = HashingVectorizer(token_pattern=TOKENS_ALPHANUMERIC)
+
+# Fit and transform the Hashing Vectorizer
+hashed_text = hashing_vec.fit_transform(text_data)
+
+# Create DataFrame and print the head
+hashed_df = pd.DataFrame(hashed_text.data)
+print(hashed_df.head())
+
+
+
+'''
+Build the winning model
+
+The parameters non_negative=True, norm=None, and binary=False make the
+HashingVectorizer perform similarly to the default settings on the CountVectorizer
+so you can just replace one with the other.
+'''
+# Import the hashing vectorizer
+from sklearn.feature_extraction.text import HashingVectorizer
+
+# Instantiate the winning model pipeline: pl
+pl = Pipeline([
+        ('union', FeatureUnion(
+            transformer_list = [
+                ('numeric_features', Pipeline([
+                    ('selector', get_numeric_data),
+                    ('imputer', Imputer())
+                ])),
+                ('text_features', Pipeline([
+                    ('selector', get_text_data),
+                    ('vectorizer', HashingVectorizer(token_pattern=TOKENS_ALPHANUMERIC,
+                                                     non_negative=True, norm=None, binary=False,
+                                                     ngram_range=(1,2))),
+                    ('dim_red', SelectKBest(chi2, chi_k))
+                ]))
+             ]
+        )),
+        ('int', SparseInteractions(degree=2)),
+        ('scale', MaxAbsScaler()),
+        ('clf', OneVsRestClassifier(LogisticRegression()))
+    ])
+
+#Log loss: 1.2258
