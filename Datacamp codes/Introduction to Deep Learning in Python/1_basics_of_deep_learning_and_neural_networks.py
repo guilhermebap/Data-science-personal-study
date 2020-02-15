@@ -1,5 +1,8 @@
 '''
-In this chapter, you'll become familiar with the fundamental concepts and terminology used in deep learning, and understand why deep learning techniques are so powerful today. You'll build simple neural networks and generate predictions with them.
+In this chapter, you'll become familiar with the fundamental concepts and
+terminology used in deep learning, and understand why deep learning
+techniques are so powerful today. You'll build simple neural networks and
+generate predictions with them.
 '''
 
 
@@ -27,8 +30,13 @@ print(output)
 '''
 The Rectified Linear Activation Function
 
-An "activation function" is a function applied at each node. It converts the node's input into some output.
-The rectified linear activation function (called ReLU) has been shown to lead to very high-performance networks. This function takes a single number as an input, returning 0 if the input is negative, and the input if the input is positive.
+An "activation function" is a function applied at each node. It converts the
+node's input into some output.
+
+The rectified linear activation function (called ReLU) has been shown to lead
+to very high-performance networks. This function takes a single number as an
+input, returning 0 if the input is negative, and the input if the input is
+positive.
 '''
 def relu(input):
     '''Define your relu activation function here'''
