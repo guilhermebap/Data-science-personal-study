@@ -8,3 +8,12 @@ rationally visualize them.
 
 
 '''
+Basic drawing of a network using NetworkX
+'''
+# Import necessary modules
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Draw the graph to screen
+nx.draw(T_sub)
+plt.show()
