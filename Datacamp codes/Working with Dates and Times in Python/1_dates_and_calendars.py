@@ -88,8 +88,39 @@ print(dates_ordered[-1])
 
 
 '''
+Printing dates in a friendly format
+'''
+
+# Assign the earliest date to first_date
+first_date = florida_hurricane_dates[0]
+
+# Convert to ISO and US formats
+iso = "Our earliest hurricane date: " + first_date.isoformat()
+us = "Our earliest hurricane date: " + first_date.strftime("%m/%d/%Y")
+
+print("ISO: " + iso)
+print("US: " + us)
 
 
+
+'''
+Representing dates in different ways
+'''
+
+# Import date
+from datetime import date
+
+# Create a date object
+andrew = date(1992, 8, 26)
+
+# Print the date in the format 'YYYY-MM'
+print(andrew.strftime('%Y-%m'))
+
+# Print the date in the format 'MONTH (YYYY)'
+print(andrew.strftime('%B (%Y)'))
+
+# Print the date in the format 'YYYY-DDD'
+print(andrew.strftime('%Y-%j'))
 
 
 
