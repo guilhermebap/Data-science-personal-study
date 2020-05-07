@@ -13,3 +13,9 @@ cover powerful Pandas operations, such as grouping and plotting
 results by time.
 
 '''
+
+import pandas as pd 
+import numpy as np 
+
+
+'''
