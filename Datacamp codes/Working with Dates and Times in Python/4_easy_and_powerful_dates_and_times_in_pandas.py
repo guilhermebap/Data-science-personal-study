@@ -51,6 +51,135 @@ print(rides['Duration'].head())
 
 
 '''
+How many joyrides?
+
+Suppose you have a theory that some people take long bike rides 
+before putting their bike back in the same dock. Let's call 
+these rides "joyrides".
+
+You only have data on one bike, so while you can't draw any 
+bigger conclusions, it's certainly worth a look.
+
+Are there many joyrides? How long were they in our data set? Use 
+the median instead of the mean, because we know there are some 
+very long trips in our data set that might skew the answer, and 
+the median is less sensitive to outliers.
+'''
+
+# Create joyrides
+joyrides = (rides['Start station'] == rides['End station'])
+
+# Total number of joyrides
+print("{} rides were joyrides".format(joyrides.sum()))
+
+# Median of all rides
+print("The median duration overall was {:.2f} seconds"\
+      .format(rides['Duration'].median()))
+
+# Median of joyrides
+print("The median duration for joyrides was {:.2f} seconds"\
+      .format(rides[joyrides]['Duration'].median()))
+
+
+
+
+'''
+It's getting cold outside, W20529
+'''
+
+# Import matplotlib
+import matplotlib.pyplot as plt
+
+# Resample rides to daily, take the size, plot the results
+rides.resample('D', on = 'Start date')\
+  .size()\
+  .plot(ylim = [0, 15])
+
+# Show the results
+plt.show()
+
+
+
+
+''''
+Members vs casual riders over time
+'''
+# Resample rides to be monthly on the basis of Start date
+monthly_rides = rides.resample('M', on='Start date')['Member type']
+
+# Take the ratio of the .value_counts() over the total number of rides
+print(monthly_rides.value_counts() / monthly_rides.size())
+
+
+
+
+'''
+Combining groupby() and resample()
+'''
+
+# Group rides by member type, and resample to the month
+grouped = rides.groupby('Member type')\
+  .resample('M', on='Start date')
+
+# Print the median duration for each group
+print(grouped['Duration'].median())
+
+
+
+
+'''
+Timezones in Pandas
+'''
+
+# Localize the Start date column to America/New_York
+rides['Start date'] = rides['Start date'].dt.tz_localize('America/New_York', 
+                                						 ambiguous='NaT')
+
+# Print first value
+print(rides['Start date'].iloc[0])
+
+# Convert the Start date column to Europe/London
+rides['Start date'] = rides['Start date'].dt.tz_convert('Europe/London')
+
+# Print the new value
+print(rides['Start date'].iloc[0])
+
+
+
+
+'''
+How long per weekday?
+
+Pandas has a number of datetime-related attributes within the .dt accessor. 
+Many of them are ones you've encountered before, like .dt.month. Others are 
+convenient and save time compared to standard Python, like .dt.weekday_name.
+'''
+
+# Add a column for the weekday of the start of the ride
+rides['Ride start weekday'] = rides['Start date'].dt.weekday_name
+
+# Print the median trip time per weekday
+print(rides.groupby('Ride start weekday')['Duration'].median())
+
+
+
+
+'''
+How long between rides?
+'''
+
+# Shift the index of the end date up one; now subract it from the start date
+rides['Time since'] = rides['Start date'] - (rides['End date'].shift(1))
+
+# Move from a timedelta to a number of seconds, which is easier to work with
+rides['Time since'] = rides['Time since'].dt.total_seconds()
+
+# Resample to the month
+monthly = rides.resample('M', on='Start date')
+
+# Print the average hours between rides each month
+print(monthly['Time since'].mean()/(60*60))
+
 
 
 
