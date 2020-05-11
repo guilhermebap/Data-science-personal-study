@@ -12,6 +12,8 @@ dig much more deeply into the bike trip data. In this chapter, you'll
 cover powerful Pandas operations, such as grouping and plotting 
 results by time.
 
+* method to work datetime object on pandas package
+
 '''
 
 import pandas as pd 
