@@ -302,6 +302,26 @@ Line #    Mem usage    Increment   Line Contents
 Bringing it all together: Star Wars profiling
 '''
 
+def get_publisher_heroes(heroes, publishers, desired_publisher):
+
+    desired_heroes = []
+
+    for i,pub in enumerate(publishers):
+        if pub == desired_publisher:
+            desired_heroes.append(heroes[i])
+
+    return desired_heroes
+
+def get_publisher_heroes_np(heroes, publishers, desired_publisher):
+
+    heroes_np = np.array(heroes)
+    pubs_np = np.array(publishers)
+
+    desired_heroes = heroes_np[pubs_np == desired_publisher]
+
+    return desired_heroes
+
+
 # Use get_publisher_heroes() to gather Star Wars heroes
 star_wars_heroes = get_publisher_heroes(heroes, publishers, 'George Lucas')
 
@@ -314,12 +334,55 @@ star_wars_heroes_np = get_publisher_heroes_np(heroes, publishers, 'George Lucas'
 print(star_wars_heroes_np)
 print(type(star_wars_heroes_np))
 
+%load_ext line_profiler
 
+%lprun -f get_publisher_heroes get_publisher_heroes(heroes, publishers, 'George Lucas')
+'''
+Timer unit: 1e-06 s
 
+Total time: 0.000297 s
+File: <ipython-input-1-5a6bc05c1c55>
+Function: get_publisher_heroes at line 1
 
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     1                                           def get_publisher_heroes(heroes, publishers, desired_publisher):
+     2                                           
+     3         1          2.0      2.0      0.7      desired_heroes = []
+     4                                           
+     5       481        150.0      0.3     50.5      for i,pub in enumerate(publishers):
+     6       480        132.0      0.3     44.4          if pub == desired_publisher:
+     7         4         12.0      3.0      4.0              desired_heroes.append(heroes[i])
+     8                                           
+     9         1          1.0      1.0      0.3      return desired_heroes
+'''
 
+%lprun -f get_publisher_heroes_np get_publisher_heroes_np(heroes, publishers, 'George Lucas')
+'''
+Timer unit: 1e-06 s
 
+Total time: 0.000203 s
+File: <ipython-input-1-5a6bc05c1c55>
+Function: get_publisher_heroes_np at line 12
 
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    12                                           def get_publisher_heroes_np(heroes, publishers, desired_publisher):
+    13                                           
+    14         1        141.0    141.0     69.5      heroes_np = np.array(heroes)
+    15         1         44.0     44.0     21.7      pubs_np = np.array(publishers)
+    16                                           
+    17         1         18.0     18.0      8.9      desired_heroes = heroes_np[pubs_np == desired_publisher]
+    18                                           
+    19         1          0.0      0.0      0.0      return desired_heroes
+'''
 
+%load_ext memory_profiler
 
+from hero_funcs import get_publisher_heroes
+from hero_funcs import get_publisher_heroes_np
+
+%mprun -f get_publisher_heroes get_publisher_heroes(heroes, publishers, 'George Lucas')
+
+%mprun -f get_publisher_heroes_np get_publisher_heroes_np(heroes, publishers, 'George Lucas')
 
