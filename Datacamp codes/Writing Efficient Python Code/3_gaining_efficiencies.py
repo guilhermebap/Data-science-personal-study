@@ -138,10 +138,203 @@ print('Machop' in brock_pokedex_set)
 Gathering unique Pokémon
 '''
 
+def find_unique_items(data):
+    uniques = []
+
+    for item in data:
+        if item not in uniques:
+            uniques.append(item)
+
+    return uniques
+
+# Use find_unique_items() to collect unique Pokémon names
+uniq_names_func = find_unique_items(names)
+print(len(uniq_names_func))
+
+# Convert the names list to a set to collect unique Pokémon names
+uniq_names_set = set(names)
+print(len(uniq_names_set))
+
+# Check that both unique collections are equivalent
+print(sorted(uniq_names_func) == sorted(uniq_names_set))
+
+%timeit find_unique_items(names)
+# 1.65 ms +- 50.1 us per loop (mean +- std. dev. of 7 runs, 1000 loops each)
+
+%timeit set(names)
+# 8.46 us +- 54.5 ns per loop (mean +- std. dev. of 7 runs, 100000 loops each)
+
+# Use the best approach to collect unique primary types and generations
+uniq_types = set(primary_types) 
+uniq_gens = set(generations)
+print(uniq_types, uniq_gens, sep='\n')
 
 
 
 
+'''
+Gathering Pokémon without a loop
+'''
+
+gen1_gen2_name_lengths_loop = []
+
+for name,gen in zip(poke_names, poke_gens):
+    if gen < 3:
+        name_length = len(name)
+        poke_tuple = (name, name_length)
+        gen1_gen2_name_lengths_loop.append(poke_tuple)
+
+# Collect Pokémon that belong to generation 1 or generation 2
+gen1_gen2_pokemon = [name for name,gen in zip(poke_names, poke_gens) if gen < 3]
+
+# Create a map object that stores the name lengths
+name_lengths_map = map(len, gen1_gen2_pokemon)
+
+# Combine gen1_gen2_pokemon and name_lengths_map into a list
+gen1_gen2_name_lengths = [*zip(gen1_gen2_pokemon, name_lengths_map)]
+
+print(gen1_gen2_name_lengths_loop[:5])
+print(gen1_gen2_name_lengths[:5])
+
+# Alternative method
+[(name, len(name)) for name,gen in zip(poke_names, poke_gens) if gen < 3]
+
+
+'''
+Pokémon totals and averages without a loop
+'''
+
+poke_list = []
+
+for pokemon,row in zip(names, stats):
+    total_stats = np.sum(row)
+    avg_stats = np.mean(row)
+    poke_list.append((pokemon, total_stats, avg_stats))
+
+
+# Create a total stats array
+total_stats_np = stats.sum(axis=1)
+
+# Create an average stats array
+avg_stats_np = stats.mean(axis=1)
+
+# Combine names, total_stats_np, and avg_stats_np into a list
+poke_list_np = [*zip(names, total_stats_np, avg_stats_np)]
+
+print(poke_list_np == poke_list, '\n')
+print(poke_list_np[:3])
+print(poke_list[:3], '\n')
+top_3 = sorted(poke_list_np, key=lambda x: x[1], reverse=True)[:3]
+print('3 strongest Pokémon:\n{}'.format(top_3))
 
 
 
+
+'''
+One-time calculation loop
+'''
+
+for gen,count in gen_counts.items():
+    total_count = len(generations)
+    gen_percent = round(count / total_count * 100, 2)
+    print(
+      'generation {}: count = {:3} percentage = {}'
+      .format(gen, count, gen_percent)
+    )
+
+
+# Import Counter
+from collections import Counter
+
+# Collect the count of each generation
+gen_counts = Counter(generations)
+
+# Improve for loop by moving one calculation above the loop
+total_count = len(generations)
+
+for gen,count in gen_counts.items():
+    gen_percent = round(count / total_count * 100, 2)
+    print('generation {}: count = {:3} percentage = {}'
+          .format(gen, count, gen_percent))
+
+
+
+
+'''
+Holistic conversion loop
+'''
+
+enumerated_pairs = []
+
+for i,pair in enumerate(possible_pairs, 1):
+    enumerated_pair_tuple = (i,) + pair
+    enumerated_pair_list = list(enumerated_pair_tuple)
+    enumerated_pairs.append(enumerated_pair_list)
+
+
+# Collect all possible pairs using combinations()
+possible_pairs = [*combinations(pokemon_types, 2)]
+
+# Create an empty list called enumerated_tuples
+enumerated_tuples = []
+
+# Add a line to append each enumerated_pair_tuple to the empty list above
+for i,pair in enumerate(possible_pairs, 1):
+    enumerated_pair_tuple = (i,) + pair
+    enumerated_tuples.append(enumerated_pair_tuple)
+
+# Convert all tuples in enumerated_tuples to a list
+enumerated_pairs = [*map(list, enumerated_tuples)]
+print(enumerated_pairs)
+
+'''
+Great job! Rather than converting each tuple to a list within the loop, you used 
+the map() function to convert tuples to lists all at once outside of a loop. You're 
+getting the hang of writing efficient loops! Remember, you want to avoid looping as 
+much as possible when writing Python code. In cases where looping is unavoidable, be 
+sure to check your loops for one-time calculations and holistic conversions to make 
+them more efficient.
+'''
+
+
+
+
+'''
+Bringing it all together: Pokémon z-scores
+
+You want to analyze the Health Points using the z-score to see how many standard 
+deviations each Pokémon's HP is from the mean of all HPs.
+'''
+
+poke_zscores = []
+
+for name,hp in zip(names, hps):
+    hp_avg = hps.mean()
+    hp_std = hps.std()
+    z_score = (hp - hp_avg)/hp_std
+    poke_zscores.append((name, hp, z_score))
+
+highest_hp_pokemon = []
+
+for name,hp,zscore in poke_zscores:
+    if zscore > 2:
+        highest_hp_pokemon.append((name, hp, zscore))
+
+# 90.5 ms +- 21 ms per loop (mean +- std. dev. of 7 runs, 10 loops each)
+
+# Calculate the total HP avg and total HP standard deviation
+hp_avg = hps.mean()
+hp_std = hps.std()
+
+# Use NumPy to eliminate the previous for loop
+z_scores = (hps - hp_avg)/hp_std
+
+# Combine names, hps, and z_scores
+poke_zscores2 = [*zip(names, hps, z_scores)]
+print(*poke_zscores2[:3], sep='\n')
+
+# Use list comprehension with the same logic as the highest_hp_pokemon code block
+highest_hp_pokemon2 = [(names, hps, z_scores) for names,hps,z_scores in poke_zscores2 if z_scores > 2]
+print(*highest_hp_pokemon2, sep='\n')
+
+# 292 us +- 17.1 us per loop (mean +- std. dev. of 7 runs, 1000 loops each)
