@@ -189,8 +189,100 @@ print(dbacks_df[dbacks_df['WP'] >= 0.50])
 
 
 '''
+Replacing .iloc with underlying arrays
+'''
+
+def calc_win_perc(wins, games_played):
+    win_perc = wins / games_played
+    return np.round(win_perc,2)
+
+win_percs_list = []
+
+for i in range(len(baseball_df)):
+    row = baseball_df.iloc[i]
+
+    wins = row['W']
+    games_played = row['G']
+
+    win_perc = calc_win_perc(wins, games_played)
+
+    win_percs_list.append(win_perc)
+
+baseball_df['WP'] = win_percs_list
 
 
+# Use the W array and G array to calculate win percentages
+win_percs_np = calc_win_perc(baseball_df['W'].values, baseball_df['G'].values)
+
+# Append a new column to baseball_df that stores all win percentages
+baseball_df['WP'] = win_percs_np
+
+print(baseball_df.head())
+
+%%timeit
+win_percs_list = []
+for i in range(len(baseball_df)):
+    row = baseball_df.iloc[i]
+    wins = row['W']
+    games_played = row['G']
+    win_perc = calc_win_perc(wins, games_played)
+    win_percs_list.append(win_perc)
+
+baseball_df['WP'] = win_percs_list
+
+# 1.39 s +- 36.9 ms per loop (mean +- std. dev. of 7 runs, 1 loop each)
+
+%%timeit
+win_percs_np = calc_win_perc(baseball_df['W'].values, baseball_df['G'].values)
+baseball_df['WP'] = win_percs_np
+
+# 618 us +- 54.5 us per loop (mean +- std. dev. of 7 runs, 1000 loops each)
+
+
+
+
+'''
+Bringing it all together: Predict win percentage
+'''
+
+def predict_win_perc(RS, RA):
+    prediction = RS ** 2 / (RS ** 2 + RA ** 2)
+    return np.round(prediction, 2)
+
+
+win_perc_preds_loop = []
+
+# Use a loop and .itertuples() to collect each row's predicted win percentage
+for row in baseball_df.itertuples():
+    runs_scored = row.RS
+    runs_allowed = row.RA
+    win_perc_pred = predict_win_perc(runs_scored, runs_allowed)
+    win_perc_preds_loop.append(win_perc_pred)
+
+
+# Apply predict_win_perc to each row of the DataFrame
+win_perc_preds_apply = baseball_df.apply(lambda row: predict_win_perc(row['RS'], row['RA']), axis=1)
+
+
+# Calculate the win percentage predictions using NumPy arrays
+win_perc_preds_np = predict_win_perc(baseball_df['RS'].values, baseball_df['RA'].values)
+baseball_df['WP_preds'] = win_perc_preds_np
+print(baseball_df.head())
+
+%%timeit
+win_perc_preds_loop = []
+for row in baseball_df.itertuples():
+    runs_scored = row.RS
+    runs_allowed = row.RA
+    win_perc_pred = predict_win_perc(runs_scored, runs_allowed)
+    win_perc_preds_loop.append(win_perc_pred)
+#42.2 ms +- 4.15 ms per loop (mean +- std. dev. of 7 runs, 10 loops each)
+
+%timeit win_perc_preds_apply = baseball_df.apply(lambda row: predict_win_perc(row['RS'], row['RA']), axis=1)
+# 190 ms +- 15 ms per loop (mean +- std. dev. of 7 runs, 1 loop each)
+
+%timeit win_perc_preds_np = predict_win_perc(baseball_df['RS'].values, baseball_df['RA'].values)
+# 69.9 us +- 2.35 us per loop (mean +- std. dev. of 7 runs, 10000 loops each)
 
 
 
