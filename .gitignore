@@ -33,3 +33,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+*.ppt
+*.bat
+*.pptx
+*.png
+*.jpge
+*.jpg
+Alura/Webscrapping/output/
