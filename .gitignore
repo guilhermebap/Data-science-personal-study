@@ -2,6 +2,7 @@ Codenation/Aceleracao/Opcionais/Aula01
 QuarentenaDeDados\datasets\enem.csv
 requirements.txt
 'codenation - projeto pratico'
+constants.py
 
 build/
 develop-eggs/
