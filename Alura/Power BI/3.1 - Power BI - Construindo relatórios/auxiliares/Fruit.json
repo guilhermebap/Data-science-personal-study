@@ -1,0 +1,7 @@
+{
+    "name": "JuiceTheme",
+    "dataColors": ["#c5970d", "#ccc5a8", "#26867a", "#d32030", "#52bacc", "#93b9c6", "#246386", "#f2d249", "#8cd3ff"],
+    "background":"#ffffff",
+    "foreground": "#634C07",
+    "tableAccent": "#DCC16E"
+}

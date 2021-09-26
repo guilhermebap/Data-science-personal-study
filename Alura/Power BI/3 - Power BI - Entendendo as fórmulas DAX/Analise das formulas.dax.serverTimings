@@ -1,0 +1,63 @@
+{
+  "FileFormatVersion": 1,
+  "StorageEngineDuration": 3,
+  "StorageEngineDurationPercentage": 0.0,
+  "FormulaEngineDuration": 11,
+  "FormulaEngineDurationPercentage": 0.0,
+  "StoreageEngineEvents": [
+    {
+      "Class": "VertiPaqSEQueryEnd",
+      "Subclass": "VertiPaqScanInternal",
+      "Query": "SET DC_KIND=\"DENSE\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 ), COUNT () \r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\t ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  ) ;\r\n",
+      "Duration": 2,
+      "CpuTime": 0,
+      "RowNumber": 1,
+      "EstimatedRows": null,
+      "EstimatedKBytes": null,
+      "HighlightQuery": false,
+      "QueryRichText": "SET DC_KIND=\"DENSE\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 ), COUNT () \r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\t ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  ) ;\r\n"
+    },
+    {
+      "Class": "VertiPaqSEQueryEnd",
+      "Subclass": "VertiPaqScan",
+      "Query": "SET DC_KIND=\"AUTO\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 )\r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\t ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  ) ;\r\n\r\n\r\n'Estimated size ( volume, marshalling bytes ) : 1, 16'\r\n",
+      "Duration": 2,
+      "CpuTime": 0,
+      "RowNumber": 2,
+      "EstimatedRows": 1,
+      "EstimatedKBytes": 1,
+      "HighlightQuery": false,
+      "QueryRichText": "SET DC_KIND=\"AUTO\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 )\r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\t ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  ) ;\r\n\r\n\r\n'Estimated size ( volume, marshalling bytes ) : 1, 16'\r\n"
+    },
+    {
+      "Class": "VertiPaqSEQueryEnd",
+      "Subclass": "VertiPaqScanInternal",
+      "Query": "SET DC_KIND=\"DENSE\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 ), COUNT () \r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\tNOT COALESCE (  ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  )  ) ;\r\n",
+      "Duration": 1,
+      "CpuTime": 0,
+      "RowNumber": 3,
+      "EstimatedRows": null,
+      "EstimatedKBytes": null,
+      "HighlightQuery": false,
+      "QueryRichText": "SET DC_KIND=\"DENSE\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 ), COUNT () \r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\tNOT COALESCE (  ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  )  ) ;\r\n"
+    },
+    {
+      "Class": "VertiPaqSEQueryEnd",
+      "Subclass": "VertiPaqScan",
+      "Query": "SET DC_KIND=\"AUTO\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 )\r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\tNOT COALESCE (  ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  )  ) ;\r\n\r\n\r\n'Estimated size ( volume, marshalling bytes ) : 1, 16'\r\n",
+      "Duration": 1,
+      "CpuTime": 0,
+      "RowNumber": 4,
+      "EstimatedRows": 1,
+      "EstimatedKBytes": 1,
+      "HighlightQuery": false,
+      "QueryRichText": "SET DC_KIND=\"AUTO\";\r\nWITH\r\n\t$Expr0 := ( CAST ( PFCAST ( 'Tb_ItensNotas'[Quantidade] AS  INT ) AS  REAL ) * PFCAST ( 'Tb_ItensNotas'[Preço] AS  REAL )  ) \r\nSELECT\r\nSUM ( @$Expr0 )\r\nFROM 'Tb_ItensNotas'\r\nWHERE\r\n\tNOT COALESCE (  ( PFCASTCOALESCE ( 'Tb_ItensNotas'[Quantidade] AS  INT ) > COALESCE ( 20 )  )  ) ;\r\n\r\n\r\n'Estimated size ( volume, marshalling bytes ) : 1, 16'\r\n"
+    }
+  ],
+  "StorageEngineCpu": 0,
+  "TotalDuration": 14,
+  "StorageEngineQueryCount": 2,
+  "VertipaqCacheMatches": 0,
+  "TotalCpuDuration": 16,
+  "QueryEndDateTime": "2021-09-10T01:07:50.823333-03:00"
+}
