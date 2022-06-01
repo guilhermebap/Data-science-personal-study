@@ -1,0 +1,25 @@
+USE sucos_vendas;
+
+DROP TABLE IF EXISTS TABELA_ALEATORIOS;
+CREATE TABLE TABELA_ALEATORIOS(NUMERO INT);
+
+DROP PROCEDURE IF EXISTS `Tabela_Numeros`;
+DELIMITER $$
+
+CREATE PROCEDURE `Tabela_Numeros` ()
+BEGIN
+	DECLARE vInicial INT DEFAULT 0;
+    DECLARE vFinal INT default 100;
+    
+    WHILE vInicial < Vfinal
+    DO
+		INSERT INTO TABELA_ALEATORIOS
+        VALUES (f_numero_aleatorio(0, 1000));
+        SET vInicial = vInicial + 1;
+	END WHILE;
+    SELECT *
+    FROM TABELA_ALEATORIOS;
+END $$
+DELIMITER ;
+
+CALL Tabela_Numeros;

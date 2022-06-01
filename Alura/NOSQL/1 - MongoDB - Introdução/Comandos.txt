@@ -1,0 +1,148 @@
+db.createCollection("alunos")
+
+db.alunos.insert(
+	{
+		"nome": "Felipe", 
+		"data_nascimento": new Date(1994, 02, 26),
+		"notas": [10, 9, 4.5],
+		"curso": {
+			"nome": "Sistemas de Informação"
+		},
+		"habilidades":[
+			{
+				"nome": "Inglês",
+				"nível":  "Avançado"
+			}
+		]
+	}
+)
+
+db.alunos.insert(
+	{
+		"nome": "Paulo", 
+		"data_nascimento": new Date(1979, 12, 31),
+		"notas": [10, 9, 7],
+		"curso": {
+			"nome": "Ciências da Computação"
+		},
+		"habilidades":[
+			{
+				"nome": "Inglês",
+				"nível": "Avançado"
+			},
+			{
+				"nome": "Francês",
+				"nível": "Avançado"
+			}
+		]
+	}
+)
+
+db.alunos.insert(
+	{
+		"nome": "Daniela", 
+		"data_nascimento": new Date(1995, 07, 17),
+		"notas": [10, 9, 7],
+		"curso": {
+			"nome": "Moda"
+		},
+		"habilidades": [
+			{
+				"nome": "Alemão",
+				"nível":  "Básico"
+			}
+		]
+	}
+)
+
+db.alunos.remove(
+	{
+		"_id": ObjectId("56cb515ffadsf1b")
+	}
+)
+
+db.alunos.find()
+
+db.alunos.find().pretty()
+
+db.alunos.find(
+	{
+		"nome": "Felipe"
+	}
+)
+
+db.alunos.find(
+	{
+		"habilidades.nome": "Inglês"
+	}
+)
+
+db.alunos.find(
+	{
+		"nome": "Felipe",
+		"data_nascimento": new Date(1994, 02, 26)
+	}
+)
+
+db.alunos.find(
+	{
+		$or: [
+			{"curso.nome": "Sistemas de Informação"},
+			{"curso.nome": "Moda"}
+		]
+	}
+)
+
+db.alunos.find(
+	{
+		$or: [
+			{"curso.nome": "Sistemas de Informação"},
+			{"curso.nome": "Moda"}
+		],
+		"nome": "Daniela"
+	}
+)
+
+db.alunos.find({
+	"curso.nome": {
+		$in: ["Sistemas de Informação", "Ciências da Computação"]
+		}
+	}
+)
+
+###################################################################
+Modificando um dado existente
+###################################################################
+db.alunos.update({"_id": ObjectId("1234565435")}, 
+{
+    "nome": "Daniela",
+    "data_nascimento": new Date(1997, 07, 17),
+    "notas": [10, 9, 4],
+    "curso": {
+        "nome": "Moda"
+    },
+    "habilidades": [
+        {
+            "nome": "Alemão",
+            "nível": "Básico"
+        }
+    ] 
+}
+)
+
+db.alunos.update(
+	{"curso.nome": "Moda"},
+		{$set:{
+			"curso.nome": "Administração"
+		}
+	}
+)
+
+db.alunos.update(
+	{"curso.nome": "Moda"}, 
+	{$set:
+		{"curso.nome": "Administração"
+		}
+	}, 
+	{multi:true
+})
